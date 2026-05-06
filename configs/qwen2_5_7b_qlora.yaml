@@ -1,0 +1,46 @@
+model:
+  model_name_or_path: Qwen/Qwen2.5-7B-Instruct
+  trust_remote_code: true
+  use_fast_tokenizer: true
+  torch_dtype: auto
+  load_in_4bit: true
+  load_in_8bit: false
+  bnb_4bit_quant_type: nf4
+  bnb_4bit_use_double_quant: true
+  bnb_4bit_compute_dtype: auto
+
+lora:
+  r: 8
+  lora_alpha: 16
+  lora_dropout: 0.05
+  bias: none
+  target_modules:
+    - q_proj
+    - k_proj
+    - v_proj
+    - o_proj
+    - gate_proj
+    - up_proj
+    - down_proj
+
+training:
+  seed: 42
+  max_seq_length: 1024
+  num_train_epochs: 2
+  per_device_train_batch_size: 1
+  per_device_eval_batch_size: 1
+  gradient_accumulation_steps: 8
+  learning_rate: 0.0001
+  weight_decay: 0.0
+  warmup_ratio: 0.03
+  lr_scheduler_type: cosine
+  logging_steps: 10
+  eval_steps: 50
+  save_steps: 50
+  save_total_limit: 2
+  gradient_checkpointing: true
+  bf16: auto
+  fp16: auto
+  optim: paged_adamw_8bit
+  report_to: none
+  overwrite_output_dir: true
